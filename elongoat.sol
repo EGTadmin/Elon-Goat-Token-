@@ -4,7 +4,7 @@ At ElonGoat the goal to have the GOAT Elon Musk claim his statue that we will bu
     
 Main features are
 
-1) Development is critical to our success and we plan to do alot so we have a 2% dev fee.
+1) Development is critical to our success and we plan to do alot so we have a 3% dev fee.
 2) Our huge plans call for massive Marketing, so we have a 2% marketing fee.
 3) We want everyone to benefit for HODLing so there is 2% reflection. 
 4) To keep the token value and liquidity strong we add 3% back to the liquidity pool.
