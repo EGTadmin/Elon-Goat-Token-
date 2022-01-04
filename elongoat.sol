@@ -462,12 +462,12 @@ contract ElonGoat is Context, IERC20, Ownable {
     uint256 public _taxFee = 2;
     uint256 private _previousTaxFee = _taxFee;
     
-    uint256 public _liquidityFee = 8;
+    uint256 public _liquidityFee = 10;
     uint256 private _previousLiquidityFee = _liquidityFee;
     
     uint256 public marketingDivisor = 2;
-    uint256 public devDivisor = 2;
-    uint256 public burnDivisor = 1;
+    uint256 public devDivisor = 3;
+    uint256 public burnDivisor = 2;
     
     uint256 public _maxTxAmount = 3000000 * 10**6 * 10**9;
     uint256 private minimumTokensBeforeSwap = 200000 * 10**6 * 10**9; 
@@ -477,6 +477,9 @@ contract ElonGoat is Context, IERC20, Ownable {
     
     bool inSwapAndLiquify;
     bool public swapAndLiquifyEnabled = false;
+    bool public contractLockEnabled = true;
+
+    event ContractLockEnabledUpdated(bool enabled);
 
     event SwapAndLiquifyEnabledUpdated(bool enabled);
     event SwapAndLiquify(
@@ -648,6 +651,10 @@ contract ElonGoat is Context, IERC20, Ownable {
         require(amount > 0, "Transfer amount must be greater than zero");
         if(from != owner() && to != owner()) {
             require(amount <= _maxTxAmount, "Transfer amount exceeds the maxTxAmount.");
+        }
+
+        if(contractLockEnabled) {
+            require(from == owner() || to == owner(), 'Contract is locked, must be owner.');
         }
 
         uint256 contractTokenBalance = balanceOf(address(this));
@@ -926,6 +933,11 @@ contract ElonGoat is Context, IERC20, Ownable {
     function setSwapAndLiquifyEnabled(bool _enabled) public onlyOwner {
         swapAndLiquifyEnabled = _enabled;
         emit SwapAndLiquifyEnabledUpdated(_enabled);
+    }
+
+    function setContractLockEnabled(bool _enabled) public onlyOwner {
+        contractLockEnabled = _enabled;
+        emit ContractLockEnabledUpdated(_enabled);
     }
     
     function transferToAddressETH(address payable recipient, uint256 amount) private {
